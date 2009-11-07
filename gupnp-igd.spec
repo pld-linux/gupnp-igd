@@ -1,7 +1,7 @@
 Summary:	Library to handle UPnP IGD port mapping
 Name:		gupnp-igd
 Version:	0.1.3
-Release:	1
+Release:	2
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://www.gupnp.org/sources/gupnp-igd/%{name}-%{version}.tar.gz
