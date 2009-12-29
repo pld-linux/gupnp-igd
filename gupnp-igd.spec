@@ -1,17 +1,17 @@
 Summary:	Library to handle UPnP IGD port mapping
 Name:		gupnp-igd
-Version:	0.1.3
-Release:	2
+Version:	0.1.5
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://www.gupnp.org/sources/gupnp-igd/%{name}-%{version}.tar.gz
-# Source0-md5:	ea0afa85c19fda67ef0ae54fa4faeb9f
+# Source0-md5:	991156298967b586bb888cacce202dea
 URL:		http://www.gupnp.org/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
 BuildRequires:	glib2-devel >= 1:2.14.0
 BuildRequires:	gtk-doc >= 1.0
-BuildRequires:	gupnp-devel >= 0.12.3
+BuildRequires:	gupnp-devel >= 0.13.2
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -24,7 +24,7 @@ Summary:	Header files for gupnp-igd library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki gupnp-igd
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	gupnp-devel >= 0.12.3
+Requires:	gupnp-devel >= 0.13.2
 
 %description devel
 Header files for gupnp-igd library.
@@ -60,6 +60,7 @@ Dokumentacja API biblioteki gupnp-igd.
 %setup -q
 
 %build
+%{__gtkdocize}
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
@@ -87,7 +88,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README TODO
 %attr(755,root,root) %{_libdir}/libgupnp-igd-1.0.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgupnp-igd-1.0.so.2
+%attr(755,root,root) %ghost %{_libdir}/libgupnp-igd-1.0.so.3
 
 %files devel
 %defattr(644,root,root,755)
