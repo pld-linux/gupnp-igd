@@ -1,11 +1,12 @@
 Summary:	Library to handle UPnP IGD port mapping
 Name:		gupnp-igd
-Version:	0.1.5
+Version:	0.1.6
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://www.gupnp.org/sources/gupnp-igd/%{name}-%{version}.tar.gz
-# Source0-md5:	991156298967b586bb888cacce202dea
+# Source0-md5:	41b22e86d9b0a08a849de38027650eb1
+Patch0:		%{name}-install.patch
 URL:		http://www.gupnp.org/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
@@ -14,6 +15,7 @@ BuildRequires:	gtk-doc >= 1.0
 BuildRequires:	gupnp-devel >= 0.13.2
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
+BuildRequires:	python-pygobject-devel >= 2.16.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -56,13 +58,26 @@ gupnp-igd library API documentation.
 %description apidocs -l pl.UTF-8
 Dokumentacja API biblioteki gupnp-igd.
 
+%package -n python-gupnp-igd
+Summary:	gupnp-igd Python bindings
+Summary(pl.UTF-8):	Wiązania Pythona do gupnp-igd
+Group:		Development/Languages/Python
+Requires:	%{name} = %{version}-%{release}
+
+%description -n python-gupnp-igd
+gupnp-igd Python bindings.
+
+%description -n python-gupnp-igd -l pl.UTF-8
+Wiązania Pythona do gupnp-igd.
+
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__gtkdocize}
 %{__libtoolize}
-%{__aclocal}
+%{__aclocal} -I m4
 %{__autoconf}
 %{__autoheader}
 %{__automake}
@@ -77,6 +92,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+%{__rm} -f $RPM_BUILD_ROOT%{py_sitedir}/gupnp/*.{a,la}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -104,3 +121,8 @@ rm -rf $RPM_BUILD_ROOT
 %files apidocs
 %defattr(644,root,root,755)
 %{_gtkdocdir}/gupnp-igd
+
+%files -n python-gupnp-igd
+%defattr(644,root,root,755)
+%dir %{py_sitedir}/gupnp
+%attr(755,root,root) %{py_sitedir}/gupnp/igd.so
