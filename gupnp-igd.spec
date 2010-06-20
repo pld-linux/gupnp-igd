@@ -1,17 +1,16 @@
 Summary:	Library to handle UPnP IGD port mapping
 Name:		gupnp-igd
-Version:	0.1.6
+Version:	0.1.7
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://www.gupnp.org/sources/gupnp-igd/%{name}-%{version}.tar.gz
-# Source0-md5:	41b22e86d9b0a08a849de38027650eb1
-Patch0:		%{name}-install.patch
+# Source0-md5:	75aaca3361046ac42125f81d07c072ac
 URL:		http://www.gupnp.org/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
 BuildRequires:	docbook-dtd412-xml
-BuildRequires:	glib2-devel >= 1:2.14.0
+BuildRequires:	glib2-devel >= 1:2.16.0
 BuildRequires:	gtk-doc >= 1.0
 BuildRequires:	gupnp-devel >= 0.13.2
 BuildRequires:	libtool
@@ -74,7 +73,6 @@ Wiązania Pythona do gupnp-igd.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__gtkdocize}
@@ -85,7 +83,8 @@ Wiązania Pythona do gupnp-igd.
 %{__automake}
 %configure \
 	--enable-gtk-doc \
-	--with-html-dir=%{_gtkdocdir}
+	--with-html-dir=%{_gtkdocdir} \
+	--disable-silent-rules
 
 %{__make}
 
@@ -96,6 +95,8 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT
 
 %{__rm} -f $RPM_BUILD_ROOT%{py_sitedir}/gupnp/*.{a,la}
+
+%py_postclean
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -128,3 +129,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %dir %{py_sitedir}/gupnp
 %attr(755,root,root) %{py_sitedir}/gupnp/igd.so
+%{py_sitedir}/gupnp/*.py[co]
