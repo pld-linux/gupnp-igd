@@ -1,12 +1,15 @@
 Summary:	Library to handle UPnP IGD port mapping
+Summary(pl.UTF-8):	Biblioteka do obsługi odwzorowywania portów IGD dla UPnP
 Name:		gupnp-igd
 Version:	0.1.7
 Release:	3
-License:	LGPL v2+
+License:	LGPL v2.1+
 Group:		Libraries
-Source0:	http://www.gupnp.org/sources/gupnp-igd/%{name}-%{version}.tar.gz
+#Source0Download: http://gupnp.org/download
+Source0:	http://gupnp.org/sources/gupnp-igd/%{name}-%{version}.tar.gz
 # Source0-md5:	75aaca3361046ac42125f81d07c072ac
-URL:		http://www.gupnp.org/
+Patch0:		%{name}-make.patch
+URL:		http://gupnp.org/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
 BuildRequires:	docbook-dtd412-xml
@@ -17,16 +20,24 @@ BuildRequires:	libtool
 BuildRequires:	pkgconfig
 BuildRequires:	python-pygobject-devel >= 2.16.0
 BuildRequires:	rpm-pythonprov
+BuildRequires:	rpmbuild(macros) >= 1.219
+Requires:	glib2 >= 1:2.16
+Requires:	gupnp >= 0.13.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Library to handle UPnP Internet Gateway Device port mappings.
+
+%description -l pl.UTF-8
+Biblioteka do obsługi odwzorowywania portów IGD (Internet Gateway
+Device - bramek internetowych) dla UPnP.
 
 %package devel
 Summary:	Header files for gupnp-igd library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki gupnp-igd
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	glib2-devel >= 1:2.16
 Requires:	gupnp-devel >= 0.13.2
 
 %description devel
@@ -64,6 +75,7 @@ Summary:	gupnp-igd Python bindings
 Summary(pl.UTF-8):	Wiązania Pythona do gupnp-igd
 Group:		Development/Languages/Python
 Requires:	%{name} = %{version}-%{release}
+Requires:	python-pygobject >= 2.16.0
 
 %description -n python-gupnp-igd
 gupnp-igd Python bindings.
@@ -73,6 +85,7 @@ Wiązania Pythona do gupnp-igd.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__gtkdocize}
@@ -82,9 +95,9 @@ Wiązania Pythona do gupnp-igd.
 %{__autoheader}
 %{__automake}
 %configure \
+	--disable-silent-rules \
 	--enable-gtk-doc \
-	--with-html-dir=%{_gtkdocdir} \
-	--disable-silent-rules
+	--with-html-dir=%{_gtkdocdir}
 
 %{__make}
 
@@ -94,7 +107,7 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%{__rm} -f $RPM_BUILD_ROOT%{py_sitedir}/gupnp/*.{a,la}
+%{__rm} $RPM_BUILD_ROOT%{py_sitedir}/gupnp/*.{a,la}
 
 %py_postclean
 
