@@ -1,19 +1,19 @@
 Summary:	Library to handle UPnP IGD port mapping
 Summary(pl.UTF-8):	Biblioteka do obsługi odwzorowywania portów IGD dla UPnP
 Name:		gupnp-igd
-Version:	0.1.7
-Release:	3
+Version:	0.1.11
+Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
 #Source0Download: http://gupnp.org/download
-Source0:	http://gupnp.org/sources/gupnp-igd/%{name}-%{version}.tar.gz
-# Source0-md5:	75aaca3361046ac42125f81d07c072ac
-Patch0:		%{name}-make.patch
+Source0:	http://gupnp.org/sites/all/files/sources/%{name}-%{version}.tar.gz
+# Source0-md5:	e6f21d5a7f7c10ae0b528369c2683f81
 URL:		http://gupnp.org/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	glib2-devel >= 1:2.16.0
+BuildRequires:	gobject-introspection-devel >= 0.10
 BuildRequires:	gtk-doc >= 1.0
 BuildRequires:	gupnp-devel >= 0.13.2
 BuildRequires:	libtool
@@ -85,7 +85,6 @@ Wiązania Pythona do gupnp-igd.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__gtkdocize}
@@ -99,7 +98,8 @@ Wiązania Pythona do gupnp-igd.
 	--enable-gtk-doc \
 	--with-html-dir=%{_gtkdocdir}
 
-%{__make}
+# there are some races with gir generation
+%{__make} -j1
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -107,9 +107,11 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%py_postclean
 %{__rm} $RPM_BUILD_ROOT%{py_sitedir}/gupnp/*.{a,la}
 
-%py_postclean
+# obsoleted by pkg-config
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libgupnp-igd-1.0.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -122,13 +124,14 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog NEWS README TODO
 %attr(755,root,root) %{_libdir}/libgupnp-igd-1.0.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libgupnp-igd-1.0.so.3
+%{_libdir}/girepository-1.0/GUPnPIgd-1.0.typelib
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libgupnp-igd-1.0.so
-%{_libdir}/libgupnp-igd-1.0.la
 %{_includedir}/gupnp-igd-1.0
 %{_pkgconfigdir}/gupnp-igd-1.0.pc
+%{_datadir}/gir-1.0/GUPnPIgd-1.0.gir
 
 %files static
 %defattr(644,root,root,755)
