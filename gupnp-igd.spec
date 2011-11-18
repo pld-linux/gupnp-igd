@@ -1,13 +1,12 @@
 Summary:	Library to handle UPnP IGD port mapping
 Summary(pl.UTF-8):	Biblioteka do obsługi odwzorowywania portów IGD dla UPnP
 Name:		gupnp-igd
-Version:	0.1.11
-Release:	2
+Version:	0.2.0
+Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
-#Source0Download: http://gupnp.org/download
-Source0:	http://gupnp.org/sites/all/files/sources/%{name}-%{version}.tar.gz
-# Source0-md5:	e6f21d5a7f7c10ae0b528369c2683f81
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/gupnp-igd/0.2/%{name}-%{version}.tar.xz
+# Source0-md5:	7097d474dc6247fa4ef96e4a2621f9cd
 URL:		http://gupnp.org/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
@@ -15,14 +14,16 @@ BuildRequires:	docbook-dtd412-xml
 BuildRequires:	glib2-devel >= 1:2.16.0
 BuildRequires:	gobject-introspection-devel >= 0.10
 BuildRequires:	gtk-doc >= 1.0
-BuildRequires:	gupnp-devel >= 0.13.2
+BuildRequires:	gupnp-devel >= 0.18.0
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
 BuildRequires:	python-pygobject-devel >= 2.16.0
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.219
+BuildRequires:	tar >= 1:1.22
+BuildRequires:	xz
 Requires:	glib2 >= 1:2.16
-Requires:	gupnp >= 0.13.2
+Requires:	gupnp >= 0.18.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -38,7 +39,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki gupnp-igd
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	glib2-devel >= 1:2.16
-Requires:	gupnp-devel >= 0.13.2
+Requires:	gupnp-devel >= 0.18.0
 
 %description devel
 Header files for gupnp-igd library.
@@ -123,7 +124,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README TODO
 %attr(755,root,root) %{_libdir}/libgupnp-igd-1.0.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgupnp-igd-1.0.so.3
+%attr(755,root,root) %ghost %{_libdir}/libgupnp-igd-1.0.so.4
 %{_libdir}/girepository-1.0/GUPnPIgd-1.0.typelib
 
 %files devel
