@@ -1,12 +1,12 @@
 #
 # Conditional build:
 %bcond_without	python	# Python binding
-#
+
 Summary:	Library to handle UPnP IGD port mapping
 Summary(pl.UTF-8):	Biblioteka do obsługi odwzorowywania portów IGD dla UPnP
 Name:		gupnp-igd
 Version:	0.2.3
-Release:	1
+Release:	2
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/gupnp-igd/0.2/%{name}-%{version}.tar.xz
@@ -69,6 +69,9 @@ Summary:	gupnp-igd library API documentation
 Summary(pl.UTF-8):	Dokumentacja API biblioteki gupnp-igd
 Group:		Documentation
 Requires:	gtk-doc-common
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description apidocs
 gupnp-igd library API documentation.
@@ -110,7 +113,6 @@ Wiązania Pythona do gupnp-igd.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
