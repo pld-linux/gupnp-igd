@@ -5,12 +5,12 @@
 Summary:	Library to handle UPnP IGD port mapping
 Summary(pl.UTF-8):	Biblioteka do obsługi odwzorowywania portów IGD dla UPnP
 Name:		gupnp-igd
-Version:	0.2.4
-Release:	3
+Version:	0.2.5
+Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/gupnp-igd/0.2/%{name}-%{version}.tar.xz
-# Source0-md5:	124371136b5a7b1056a3681780a62772
+# Source0-md5:	d164e096d0f140bb1f5d9503727b424a
 URL:		http://gupnp.org/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
