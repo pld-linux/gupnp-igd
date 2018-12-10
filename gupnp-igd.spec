@@ -17,8 +17,8 @@ BuildRequires:	automake
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	glib2-devel >= 1:2.26
 BuildRequires:	gobject-introspection-devel >= 0.10
-BuildRequires:	gssdp-devel
-BuildRequires:	gtk-doc >= 1.0
+BuildRequires:	gssdp-devel >= 1.0
+BuildRequires:	gtk-doc >= 1.10
 BuildRequires:	gupnp-devel >= 0.18.0
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
