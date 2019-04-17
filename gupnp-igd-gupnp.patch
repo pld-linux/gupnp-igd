@@ -1,0 +1,44 @@
+--- gupnp-igd-0.2.5/configure.ac.orig	2017-11-20 17:19:31.000000000 +0100
++++ gupnp-igd-0.2.5/configure.ac	2019-04-17 10:47:43.904365637 +0200
+@@ -11,7 +11,7 @@
+ AC_PROG_LIBTOOL
+ AC_FUNC_MMAP
+ 
+-PKG_CHECK_MODULES(LIBGUPNP, glib-2.0 >= 2.26 gobject-2.0 >= 2.26 gssdp-1.0 gupnp-1.0 >= 0.18 gthread-2.0)
++PKG_CHECK_MODULES(LIBGUPNP, glib-2.0 >= 2.26 gobject-2.0 >= 2.26 gssdp-1.2 gupnp-1.2 >= 0.18 gthread-2.0)
+ 
+ # glib-genmarshal
+ GLIB_GENMARSHAL=`pkg-config --variable=glib_genmarshal glib-2.0`
+--- gupnp-igd-0.2.5/gupnp-igd-1.0.pc.in.orig	2009-05-05 00:40:53.000000000 +0200
++++ gupnp-igd-0.2.5/gupnp-igd-1.0.pc.in	2019-04-17 10:49:24.620486677 +0200
+@@ -5,7 +5,7 @@
+ 
+ Name: gupnp-igd-1.0
+ Description: GUPnP Simple IGD library
+-Requires: gupnp-1.0
++Requires: gupnp-1.2
+ Version: @VERSION@
+ Libs: -L${libdir} -lgupnp-igd-1.0
+ Cflags: -I${includedir}/gupnp-igd-1.0
+--- gupnp-igd-0.2.5/gupnp-igd-1.0-uninstalled.pc.in.orig	2009-01-06 18:21:17.000000000 +0100
++++ gupnp-igd-0.2.5/gupnp-igd-1.0-uninstalled.pc.in	2019-04-17 10:49:35.037096912 +0200
+@@ -5,7 +5,7 @@
+ 
+ Name: gupnp-igd-1.0
+ Description: GUPnP Simple IGD library
+-Requires: gupnp-1.0
++Requires: gupnp-1.2
+ Version: @VERSION@
+ Libs: ${libdir}/libgupnp-av-1.0.la
+ Cflags: -I${includedir}
+--- gupnp-igd-0.2.5/libgupnp-igd/Makefile.am.orig	2014-10-01 05:45:21.000000000 +0200
++++ gupnp-igd-0.2.5/libgupnp-igd/Makefile.am	2019-04-17 10:57:36.401155806 +0200
+@@ -60,7 +60,7 @@
+ GUPnPIgd_1_0_gir_LIBS = $(lib_LTLIBRARIES)
+ GUPnPIgd_1_0_gir_FILES = $(libgupnp_igd_1_0_la_SOURCES) $(libgupnp_igd_inc_HEADERS)
+ GUPnPIgd_1_0_gir_INCLUDES=GObject-2.0
+-GUPnPIgd_1_0_gir_PACKAGES=gupnp-1.0
++GUPnPIgd_1_0_gir_PACKAGES=gupnp-1.2
+ GUPnPIgd_1_0_gir_CFLAGS=-I$(srcdir) -I$(top_srcdir)
+ 
+ if HAVE_INTROSPECTION
