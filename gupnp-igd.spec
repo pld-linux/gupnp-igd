@@ -1,35 +1,34 @@
 #
 # Conditional build:
-%bcond_without	python	# Python binding
+%bcond_without	apidocs	# API documentation
 
 Summary:	Library to handle UPnP IGD port mapping
 Summary(pl.UTF-8):	Biblioteka do obsługi odwzorowywania portów IGD dla UPnP
 Name:		gupnp-igd
-Version:	0.2.5
-Release:	3
+Version:	1.2.0
+Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/gupnp-igd/0.2/%{name}-%{version}.tar.xz
-# Source0-md5:	d164e096d0f140bb1f5d9503727b424a
-Patch0:		%{name}-gupnp.patch
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/gupnp-igd/1.2/%{name}-%{version}.tar.xz
+# Source0-md5:	84371a62238be13896f8a2c08ab573a2
 URL:		http://gupnp.org/
-BuildRequires:	autoconf >= 2.53
-BuildRequires:	automake
 BuildRequires:	docbook-dtd412-xml
-BuildRequires:	glib2-devel >= 1:2.26
+BuildRequires:	glib2-devel >= 1:2.38
 BuildRequires:	gobject-introspection-devel >= 0.10
-BuildRequires:	gssdp-devel >= 1.0
-BuildRequires:	gtk-doc >= 1.10
-BuildRequires:	gupnp-devel >= 0.18.0
-BuildRequires:	libtool
+BuildRequires:	gssdp-devel >= 1.2.0
+%{?with_apidocs:BuildRequires:	gtk-doc >= 1.10}
+BuildRequires:	gupnp-devel >= 1.2.0
+BuildRequires:	meson
+BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
-%{?with_python:BuildRequires:	python-pygobject-devel >= 2.16.0}
-BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.219
+BuildRequires:	rpmbuild(macros) >= 1.736
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
-Requires:	glib2 >= 1:2.26
-Requires:	gupnp >= 0.18.0
+Requires:	glib2 >= 1:2.38
+Requires:	gssdp >= 1.2.0
+Requires:	gupnp >= 1.2.0
+# old (non-GI) python binding
+Obsoletes:	python-gupnp-igd < 1.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -44,8 +43,9 @@ Summary:	Header files for gupnp-igd library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki gupnp-igd
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.26
-Requires:	gupnp-devel >= 0.18.0
+Requires:	glib2-devel >= 1:2.38
+Requires:	gssdp-devel >= 1.2.0
+Requires:	gupnp-devel >= 1.2.0
 
 %description devel
 Header files for gupnp-igd library.
@@ -70,7 +70,7 @@ Summary:	gupnp-igd library API documentation
 Summary(pl.UTF-8):	Dokumentacja API biblioteki gupnp-igd
 Group:		Documentation
 Requires:	gtk-doc-common
-%if "%{_rpmversion}" >= "5"
+%if "%{_rpmversion}" >= "4.6"
 BuildArch:	noarch
 %endif
 
@@ -80,52 +80,19 @@ gupnp-igd library API documentation.
 %description apidocs -l pl.UTF-8
 Dokumentacja API biblioteki gupnp-igd.
 
-%package -n python-gupnp-igd
-Summary:	gupnp-igd Python bindings
-Summary(pl.UTF-8):	Wiązania Pythona do gupnp-igd
-Group:		Development/Languages/Python
-Requires:	%{name} = %{version}-%{release}
-Requires:	python-pygobject >= 2.16.0
-
-%description -n python-gupnp-igd
-gupnp-igd Python bindings.
-
-%description -n python-gupnp-igd -l pl.UTF-8
-Wiązania Pythona do gupnp-igd.
-
 %prep
 %setup -q
-%patch0 -p1
 
 %build
-%{__gtkdocize}
-%{__libtoolize}
-%{__aclocal} -I m4
-%{__autoconf}
-%{__autoheader}
-%{__automake}
-%configure \
-	--disable-silent-rules \
-	--enable-gtk-doc \
-	%{?with_python:--enable-python} \
-	--with-html-dir=%{_gtkdocdir}
+%meson build \
+	%{?with_apidocs:-Dgtk_doc=true}
 
-# there are some races with gir generation
-%{__make} -j1
+%ninja_build -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT
-
-%if %{with python}
-%py_postclean
-%{__rm} $RPM_BUILD_ROOT%{py_sitedir}/gupnp/*.{a,la}
-%endif
-
-# obsoleted by pkg-config
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libgupnp-igd-1.0.la
+%ninja_install -C build
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -135,7 +102,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog NEWS README TODO
+%doc AUTHORS NEWS README TODO
 %attr(755,root,root) %{_libdir}/libgupnp-igd-1.0.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libgupnp-igd-1.0.so.4
 %{_libdir}/girepository-1.0/GUPnPIgd-1.0.typelib
@@ -151,14 +118,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_libdir}/libgupnp-igd-1.0.a
 
+%if %{with apidocs}
 %files apidocs
 %defattr(644,root,root,755)
 %{_gtkdocdir}/gupnp-igd
-
-%if %{with python}
-%files -n python-gupnp-igd
-%defattr(644,root,root,755)
-%dir %{py_sitedir}/gupnp
-%attr(755,root,root) %{py_sitedir}/gupnp/igd.so
-%{py_sitedir}/gupnp/*.py[co]
 %endif
