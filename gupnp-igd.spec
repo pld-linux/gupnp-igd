@@ -9,9 +9,10 @@ Version:	1.2.0
 Release:	2
 License:	LGPL v2.1+
 Group:		Libraries
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/gupnp-igd/1.2/%{name}-%{version}.tar.xz
+# note: 1.2.x is stable libsoup 2.x based version; for libsoup3 based 1.6+ see gupnp-igd1.6.spec
+Source0:	https://download.gnome.org/sources/gupnp-igd/1.2/%{name}-%{version}.tar.xz
 # Source0-md5:	84371a62238be13896f8a2c08ab573a2
-URL:		http://gupnp.org/
+URL:		https://wiki.gnome.org/Projects/GUPnP
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	glib2-devel >= 1:2.38
 BuildRequires:	gobject-introspection-devel >= 0.10
@@ -21,6 +22,7 @@ BuildRequires:	gupnp-devel >= 1.2.0
 BuildRequires:	meson
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 1.736
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
