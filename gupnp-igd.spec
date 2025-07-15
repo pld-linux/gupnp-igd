@@ -84,15 +84,15 @@ Dokumentacja API biblioteki gupnp-igd.
 %setup -q
 
 %build
-%meson build \
+%meson \
 	%{?with_apidocs:-Dgtk_doc=true}
 
-%ninja_build -C build
+%meson_build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%ninja_install -C build
+%meson_install
 
 %clean
 rm -rf $RPM_BUILD_ROOT
